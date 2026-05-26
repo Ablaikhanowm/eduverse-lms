@@ -1,0 +1,81 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Add Questions - EduVerse{% endblock %}
+
+{% block content %}
+<a href="{% url 'lesson_detail' quiz.lesson.id %}" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Back to {{ quiz.lesson.title }}
+</a>
+
+<h2 style="font-weight: 800;">{{ quiz.title }}</h2>
+<p style="color: var(--gray);">Add questions to this quiz. You can add as many as you want.</p>
+
+<!-- Existing questions -->
+{% if questions %}
+    <div class="card p-4 mb-4">
+        <h5 class="fw-bold mb-3"><i class="bi bi-list-check"></i> Added Questions ({{ questions.count }})</h5>
+        {% for q in questions %}
+            <div class="p-3 mb-2" style="background: var(--light-gray); border-radius: 10px;">
+                <strong>Q{{ q.order }}.</strong> {{ q.question_text }}
+                <br>
+                <small style="color: var(--gray);">
+                    A) {{ q.option_a }} &nbsp; B) {{ q.option_b }} &nbsp; C) {{ q.option_c }} &nbsp; D) {{ q.option_d }}
+                    &nbsp;&bull;&nbsp; Correct: <span style="color: var(--success); font-weight: 600;">{{ q.correct_answer }}</span>
+                </small>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Add new question form -->
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-plus-circle"></i> Add New Question</h5>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Question Text</label>
+                    <textarea name="question_text" class="form-control" rows="3" placeholder="Write your question here..." required></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Option A</label>
+                        <input type="text" name="option_a" class="form-control" placeholder="Option A" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Option B</label>
+                        <input type="text" name="option_b" class="form-control" placeholder="Option B" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Option C</label>
+                        <input type="text" name="option_c" class="form-control" placeholder="Option C" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Option D</label>
+                        <input type="text" name="option_d" class="form-control" placeholder="Option D" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Correct Answer</label>
+                        <select name="correct_answer" class="form-select" required>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Question Order</label>
+                        <input type="number" name="order" class="form-control" value="{{ questions.count|add:1 }}" min="1">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="bi bi-plus-lg"></i> Add Question
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Create Quiz - EduVerse{% endblock %}
+
+{% block content %}
+<a href="{% url 'lesson_detail' lesson.id %}" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Back to {{ lesson.title }}
+</a>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h2 class="fw-bold mb-4"><i class="bi bi-patch-question"></i> Create Quiz</h2>
+            <p style="color: var(--gray);">For lesson: <strong>{{ lesson.title }}</strong></p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Quiz Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="e.g. Chapter 1 Review Quiz" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="bi bi-arrow-right"></i> Create and Add Questions
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

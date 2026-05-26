@@ -1,0 +1,60 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Quiz Results - EduVerse{% endblock %}
+
+{% block content %}
+<a href="{% url 'lesson_detail' quiz.lesson.id %}" class="back-btn">
+    <i class="bi bi-arrow-left"></i> Back to {{ quiz.lesson.title }}
+</a>
+
+<h2 style="font-weight: 800;">Results: {{ quiz.title }}</h2>
+
+<div class="card p-4 mb-4 text-center">
+    <h1 style="font-size: 3.5rem; font-weight: 800; color: {% if percentage >= 70 %}var(--success){% elif percentage >= 50 %}var(--accent){% else %}var(--danger){% endif %};">
+        {{ percentage }}%
+    </h1>
+    <p style="font-size: 1.2rem; color: var(--gray);">
+        You got <strong>{{ correct_count }}</strong> out of <strong>{{ total_count }}</strong> correct
+    </p>
+    <div class="progress mx-auto" style="max-width: 400px;">
+        <div class="progress-bar" role="progressbar"
+             style="width: {{ percentage }}%; background-color: {% if percentage >= 70 %}var(--success){% elif percentage >= 50 %}var(--accent){% else %}var(--danger){% endif %};">
+        </div>
+    </div>
+</div>
+
+{% for result in results %}
+    <div class="card p-4 mb-3" style="border-left: 4px solid {% if result.is_correct %}var(--success){% else %}var(--danger){% endif %};">
+        <h5 class="fw-bold mb-3">
+            {% if result.is_correct %}
+                <i class="bi bi-check-circle-fill" style="color: var(--success);"></i>
+            {% else %}
+                <i class="bi bi-x-circle-fill" style="color: var(--danger);"></i>
+            {% endif %}
+            Q{{ result.question.order }}. {{ result.question.question_text }}
+        </h5>
+        <p>
+            <strong>Your answer:</strong>
+            <span class="{% if result.is_correct %}text-success{% else %}text-danger{% endif %} fw-bold">
+                {{ result.selected }}) 
+                {% if result.selected == 'A' %}{{ result.question.option_a }}{% endif %}
+                {% if result.selected == 'B' %}{{ result.question.option_b }}{% endif %}
+                {% if result.selected == 'C' %}{{ result.question.option_c }}{% endif %}
+                {% if result.selected == 'D' %}{{ result.question.option_d }}{% endif %}
+            </span>
+        </p>
+        {% if not result.is_correct %}
+            <p>
+                <strong>Correct answer:</strong>
+                <span style="color: var(--success); font-weight: 600;">
+                    {{ result.question.correct_answer }})
+                    {% if result.question.correct_answer == 'A' %}{{ result.question.option_a }}{% endif %}
+                    {% if result.question.correct_answer == 'B' %}{{ result.question.option_b }}{% endif %}
+                    {% if result.question.correct_answer == 'C' %}{{ result.question.option_c }}{% endif %}
+                    {% if result.question.correct_answer == 'D' %}{{ result.question.option_d }}{% endif %}
+                </span>
+            </p>
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}

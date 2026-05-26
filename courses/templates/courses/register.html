@@ -1,0 +1,56 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Register - EduVerse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card p-4">
+            <div class="text-center mb-4">
+                <i class="bi bi-person-plus-fill" style="font-size: 3rem; color: var(--primary);"></i>
+                <h2 class="mt-2" style="font-weight: 800;">Create Account</h2>
+                <p style="color: var(--gray);">Join EduVerse and start learning</p>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">{{ field.label }}</label>
+                        {% if field.name == 'role' %}
+                            <select name="{{ field.html_name }}" class="form-select">
+                                <option value="student">Student</option>
+                                <option value="instructor">Instructor</option>
+                            </select>
+                        {% elif field.name == 'password1' or field.name == 'password2' %}
+                            <input type="password"
+                                   name="{{ field.html_name }}"
+                                   class="form-control {% if field.errors %}is-invalid{% endif %}"
+                                   placeholder="{{ field.label }}"
+                                   required>
+                        {% else %}
+                            <input type="{{ field.field.widget.input_type|default:'text' }}"
+                                   name="{{ field.html_name }}"
+                                   class="form-control {% if field.errors %}is-invalid{% endif %}"
+                                   placeholder="{{ field.label }}"
+                                   {% if field.field.required %}required{% endif %}
+                                   value="{{ field.value|default:'' }}">
+                        {% endif %}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="invalid-feedback">{{ field.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-2">
+                    <i class="bi bi-person-check"></i> Register
+                </button>
+                <p class="text-center mt-3" style="color: var(--gray);">
+                    Already have an account? <a href="{% url 'login' %}" style="color: var(--primary); font-weight: 600;">Login here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

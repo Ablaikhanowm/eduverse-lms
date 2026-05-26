@@ -1,0 +1,34 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Login - EduVerse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card p-4">
+            <div class="text-center mb-4">
+                <i class="bi bi-mortarboard-fill" style="font-size: 3rem; color: var(--primary);"></i>
+                <h2 class="mt-2" style="font-weight: 800;">Welcome Back</h2>
+                <p style="color: var(--gray);">Log in to continue learning</p>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-2">
+                    <i class="bi bi-box-arrow-in-right"></i> Log In
+                </button>
+                <p class="text-center mt-3" style="color: var(--gray);">
+                    Don't have an account? <a href="{% url 'register' %}" style="color: var(--primary); font-weight: 600;">Register here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
