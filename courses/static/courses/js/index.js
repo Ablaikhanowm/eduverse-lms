@@ -1,0 +1,1 @@
+ReactDOM.createRoot(document.getElementById('react-app')).render(<App />);
